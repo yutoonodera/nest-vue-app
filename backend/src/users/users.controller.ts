@@ -10,9 +10,13 @@ export class UsersController {
   @Post()
   create(@Body() body: unknown) {
     const result = CreateUserSchema.safeParse(body);
+
     if (!result.success) {
-      throw new BadRequestException(result.error.issues);
+      return {
+        message: result.error.issues,
+      };
     }
+
     return this.usersService.create(result.data);
   }
 
